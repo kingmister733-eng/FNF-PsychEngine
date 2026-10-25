@@ -25,6 +25,7 @@ jobs:
         id: setup-ndk
         with:
           ndk-version: r21e
+          link-to-sdk: true
 
       - name: Setup Haxe
         uses: krdlab/setup-haxe@master
@@ -34,7 +35,7 @@ jobs:
       - name: Install Haxelib Libraries
         run: |
           haxelib setup ~/haxelib
-          haxelib install hxcpp --quiet
+          haxelib install hxcpp 4.3.2 --quiet
           haxelib install lime 8.1.2 --always --quiet
           haxelib install openfl 9.3.3 --always --quiet
           haxelib set lime 8.1.2
@@ -51,8 +52,9 @@ jobs:
 
       - name: Configure Lime for Android
         run: |
+          NDK_PATH="${{ steps.setup-ndk.outputs.ndk-path }}"
           haxelib run lime config ANDROID_SDK $ANDROID_HOME
-          haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_HOME
+          haxelib run lime config ANDROID_NDK_ROOT $NDK_PATH
           haxelib run lime config JAVA_HOME $JAVA_HOME
           haxelib run lime config ANDROID_SETUP true
 
@@ -62,12 +64,15 @@ jobs:
           <config>
             <set name="ANDROID_SETUP" value="true" />
             <set name="ANDROID_SDK" value="$ANDROID_HOME" />
-            <set name="ANDROID_NDK_ROOT" value="$ANDROID_NDK_HOME" />
+            <set name="ANDROID_NDK_ROOT" value="$NDK_PATH" />
             <set name="JAVA_HOME" value="$JAVA_HOME" />
           </config>
           EOF
 
       - name: Compile APK
+        env:
+          ANDROID_NDK_ROOT: ${{ steps.setup-ndk.outputs.ndk-path }}
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
         run: |
           haxelib run lime build android -final
 
