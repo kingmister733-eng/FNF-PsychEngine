@@ -1,37 +1,18 @@
 package;
 
 import debug.FPSCounter;
-import flixel.graphics.FlxGraphic;
 import flixel.FlxGame;
-import flixel.FlxState;
-import haxe.io.Path;
-import openfl.Assets;
+import flixel.FlxG;
 import openfl.Lib;
 import openfl.display.Sprite;
-import openfl.events.Event;
 import openfl.display.StageScaleMode;
-import lime.app.Application;
-import states.TitleState;
-
-#if HSCRIPT_ALLOWED
-import crowplexus.iris.Iris;
-import psychlua.HScript.HScriptInfos;
-#end
-
-#if (linux || mac)
-import lime.graphics.Image;
-#end
-
-#if desktop
-import backend.ALSoftConfig;
-#end
-
-#if CRASH_HANDLER
-import openfl.events.UncaughtErrorEvent;
-import haxe.CallStack;
+import lime.system.System;
 import haxe.io.Path;
+#if sys
+import sys.FileSystem;
 #end
-
+import states.TitleState;
+import backend.ClientPrefs;
 import backend.Highscore;
 
 class Main extends Sprite
@@ -56,33 +37,26 @@ class Main extends Sprite
 	{
 		super();
 
-		#if (cpp && windows)
-		backend.Native.fixScaling();
-		#end
-
 		#if mobile
-		Sys.setCwd(Path.addTrailingSlash(lime.system.System.applicationStorageDirectory));
+		try
+		{
+			var storage:String = System.applicationStorageDirectory;
+			if (storage != null && storage.length > 0)
+			{
+				if (!FileSystem.exists(storage))
+					FileSystem.createDirectory(storage);
+				Sys.setCwd(Path.addTrailingSlash(storage));
+			}
+		}
+		catch (e:Dynamic)
+		{
+			trace('Storage initialization warning: ' + e);
+		}
 		#end
 
-		#if VIDEOS_ALLOWED
-		hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0") ['--no-lua'] #end);
-		#end
-
-		#if LUA_ALLOWED
-		Mods.pushGlobalMods();
-		#end
-		Mods.loadTopMod();
-
-		FlxG.save.bind('funkin', CoolUtil.getSavePath());
+		// Загрузка настроек пользователя
+		ClientPrefs.loadPrefs();
 		Highscore.load();
-
-		#if HSCRIPT_ALLOWED
-		Iris.warn = function(text, ?pos) {
-			#if LUA_ALLOWED
-			PlayState.instance.addTextToDebug('HScript: ' + text, flixel.util.FlxColor.RED);
-			#end
-		};
-		#end
 
 		addChild(new FlxGame(game.width, game.height, game.initialState, game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
 
@@ -90,9 +64,6 @@ class Main extends Sprite
 		addChild(fpsVar);
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
-		if(fpsVar != null) {
-			fpsVar.visible = ClientPrefs.data.showFPS;
-		}
 
 		#if html5
 		FlxG.autoPause = false;
