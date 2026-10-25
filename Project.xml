@@ -2,7 +2,6 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 	<app title="Psych Slice Mobile" file="PsychEngine" packageName="com.custom.psychslice" package="com.custom.psychslice" main="Main" version="1.0.0" company="YourName" />
-	<app preloader="flixel.system.FlxPreloader" />
 
 	<!--Switch code to compiled code-->
 	<set name="BUILD_DIR" value="export" />
@@ -16,11 +15,10 @@
 	<assets path="assets" rename="assets" />
 
 	<!-- _______________________________ Libraries ______________________________ -->
+	<!-- Flixel сам автоматически подключает OpenFL и Lime в нужном порядке -->
 	<haxelib name="flixel" />
 	<haxelib name="flixel-addons" />
 	<haxelib name="flixel-ui" />
-	<haxelib name="openfl" />
-	<haxelib name="lime" />
 	<haxelib name="hscript-iris" />
 	<haxelib name="tjson" />
 	<haxelib name="flxanimate" />
