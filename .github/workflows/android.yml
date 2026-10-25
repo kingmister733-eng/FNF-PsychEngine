@@ -45,13 +45,23 @@ jobs:
           haxelib run lime setup flixel
           haxelib run lime setup
 
-      - name: Configure Lime Android Paths
+      - name: Configure Lime for Android
         run: |
+          haxelib run lime config ANDROID_SDK $ANDROID_HOME
+          haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_HOME
+          haxelib run lime config JAVA_HOME $JAVA_HOME
+          haxelib run lime config ANDROID_SETUP true
+
           mkdir -p ~/.lime
-          echo '<?xml version="1.0" encoding="utf-8"?>' > ~/.lime/config.xml
-          echo '<config>' >> ~/.lime/config.xml
-          echo '  <android sdk="'$ANDROID_HOME'" ndk="'$ANDROID_NDK_HOME'" java="'$JAVA_HOME'" />' >> ~/.lime/config.xml
-          echo '</config>' >> ~/.lime/config.xml
+          cat <<EOF > ~/.lime/config.xml
+          <?xml version="1.0" encoding="utf-8"?>
+          <config>
+            <set name="ANDROID_SETUP" value="true" />
+            <set name="ANDROID_SDK" value="$ANDROID_HOME" />
+            <set name="ANDROID_NDK_ROOT" value="$ANDROID_NDK_HOME" />
+            <set name="JAVA_HOME" value="$JAVA_HOME" />
+          </config>
+          EOF
 
       - name: Compile APK
         run: |
