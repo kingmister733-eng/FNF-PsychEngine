@@ -24,8 +24,7 @@ jobs:
         uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
-          ndk-version: r21e
-          link-to-sdk: true
+          ndk-version: 25.2.9519653
 
       - name: Setup Haxe
         uses: krdlab/setup-haxe@master
@@ -35,7 +34,11 @@ jobs:
       - name: Install Haxelib Libraries
         run: |
           haxelib setup ~/haxelib
-          haxelib install hxcpp 4.3.2 --quiet
+
+          # Устанавливаем исправленный hxcpp 4.3.45 напрямую от разработчиков Haxe
+          curl -sL https://github.com/HaxeFoundation/hxcpp/releases/download/v4.3.45/hxcpp-4.3.45.zip -o hxcpp-4.3.45.zip
+          haxelib install hxcpp-4.3.45.zip --always --quiet
+
           haxelib install lime 8.1.2 --always --quiet
           haxelib install openfl 9.3.3 --always --quiet
           haxelib set lime 8.1.2
