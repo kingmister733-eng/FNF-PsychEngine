@@ -1,33 +1,32 @@
-
-	<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <project>
-	<meta title="Psych Slice Mobile" description="Unified Psych and V-Slice Engine" package="com.custom.psychslice" version="1.0.0" company="YourName" />
+	<!-- _________________________ Application Settings _________________________ -->
+	<app title="Psych Slice Mobile" file="PsychEngine" packageName="com.custom.psychslice" package="com.custom.psychslice" main="Main" version="1.0.0" company="YourName" />
 
-	<!-- Указываем OpenFL как основу приложения -->
-	<app main="Main" file="PsychEngine" />
-	
+	<!--Switch code to compiled code-->
+	<set name="BUILD_DIR" value="export" />
+
 	<window width="1280" height="720" fps="60" background="#000000" hardware="true" vsync="false" />
 	<window orientation="landscape" fullscreen="true" if="mobile" />
 	<window resizable="true" unless="mobile" />
 
-	<!-- Исходники -->
+	<!-- ____________________________ Paths Settings ____________________________ -->
+	<set name="CUSTOM_DIR" value="" />
 	<source path="source" />
+	<assets path="assets" rename="assets" />
 
-	<!-- Главные движки: OpenFL и Flixel должны идти первыми -->
-	<haxelib name="lime" />
-	<haxelib name="openfl" />
+	<!-- _______________________________ Libraries ______________________________ -->
 	<haxelib name="flixel" />
 	<haxelib name="flixel-addons" />
 	<haxelib name="flixel-ui" />
-	<haxelib name="hscript" />
-	<haxelib name="flxanimate" />
+	<haxelib name="openfl" />
+	<haxelib name="lime" />
+	<haxelib name="hscript-iris" />
 	<haxelib name="tjson" />
+	<haxelib name="flxanimate" />
 	<haxelib name="extension-androidtools" if="android" />
 
-	<!-- Ассеты -->
-	<assets path="assets" rename="assets" />
-
-	<!-- Разрешения Android -->
+	<!-- ______________________________ Android _________________________________ -->
 	<config:android permission="android.permission.READ_EXTERNAL_STORAGE" />
 	<config:android permission="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<config:android permission="android.permission.VIBRATE" />
