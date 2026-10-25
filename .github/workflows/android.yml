@@ -46,8 +46,8 @@ jobs:
           haxelib install hscript-iris 1.1.0 --quiet
           haxelib install tjson 1.4.0 --quiet
           haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate 768740a56b26aa0c072720e0d1236b94afe68e3e --quiet
-          haxelib run lime setup flixel
           haxelib run lime setup
+          haxelib run openfl setup
 
       - name: Configure Lime for Android
         run: |
@@ -67,12 +67,12 @@ jobs:
           </config>
           EOF
 
-      - name: Compile APK
+      - name: Compile APK via OpenFL
         run: |
-          haxelib run lime build android -final
+          haxelib run openfl build android -final
 
       - name: Upload APK to GitHub Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Engine-Android-Release
-          path: export/release/android/bin/app/build/outputs/apk/release/*.apk
+          path: export/**/*.apk
