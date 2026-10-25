@@ -18,6 +18,9 @@
 	<haxelib name="openfl" />
 	<haxelib name="lime" />
 	<haxelib name="hscript" />
+	<haxelib name="flxanimate" />
+	<haxelib name="tjson" />
+	<haxelib name="extension-androidtools" if="android" />
 
 	<!-- Ассеты -->
 	<assets path="assets" rename="assets" />
