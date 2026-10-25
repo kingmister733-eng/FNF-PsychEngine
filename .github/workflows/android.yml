@@ -1,0 +1,60 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  buildAndroid:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android NDK
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r21e
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.4
+
+      - name: Install Haxelib Libraries
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp --quiet
+          haxelib install lime 8.1.3 --quiet
+          haxelib install openfl 9.3.3 --quiet
+          haxelib install flixel 5.6.2 --quiet
+          haxelib install flixel-addons 3.2.3 --quiet
+          haxelib install flixel-ui 2.6.1 --quiet
+          haxelib install hscript 2.5.0 --quiet
+          haxelib run lime setup flixel
+          haxelib run lime setup
+
+      - name: Configure Android SDK & NDK for Lime
+        run: |
+          haxelib run lime config ANDROID_SDK $ANDROID_HOME
+          haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_HOME
+          haxelib run lime config JAVA_HOME $JAVA_HOME
+
+      - name: Compile APK
+        run: |
+          haxelib run lime build android -final
+
+      - name: Upload APK to GitHub Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Engine-Android-Release
+          path: export/release/android/bin/app/build/outputs/apk/release/*.apk
