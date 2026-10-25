@@ -1,7 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+
+	<?xml version="1.0" encoding="utf-8"?>
 <project>
 	<meta title="Psych Slice Mobile" description="Unified Psych and V-Slice Engine" package="com.custom.psychslice" version="1.0.0" company="YourName" />
 
+	<!-- Указываем OpenFL как основу приложения -->
 	<app main="Main" file="PsychEngine" />
 	
 	<window width="1280" height="720" fps="60" background="#000000" hardware="true" vsync="false" />
@@ -11,12 +13,12 @@
 	<!-- Исходники -->
 	<source path="source" />
 
-	<!-- Библиотеки -->
+	<!-- Главные движки: OpenFL и Flixel должны идти первыми -->
+	<haxelib name="lime" />
+	<haxelib name="openfl" />
 	<haxelib name="flixel" />
 	<haxelib name="flixel-addons" />
 	<haxelib name="flixel-ui" />
-	<haxelib name="openfl" />
-	<haxelib name="lime" />
 	<haxelib name="hscript" />
 	<haxelib name="flxanimate" />
 	<haxelib name="tjson" />
