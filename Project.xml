@@ -2,6 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 	<app title="Psych Slice Mobile" file="PsychEngine" packageName="com.custom.psychslice" package="com.custom.psychslice" main="Main" version="1.0.0" company="YourName" />
+	<app preloader="flixel.system.FlxPreloader" />
 
 	<!--Switch code to compiled code-->
 	<set name="BUILD_DIR" value="export" />
@@ -11,7 +12,6 @@
 	<window resizable="true" unless="mobile" />
 
 	<!-- ____________________________ Paths Settings ____________________________ -->
-	<set name="CUSTOM_DIR" value="" />
 	<source path="source" />
 	<assets path="assets" rename="assets" />
 
@@ -24,7 +24,6 @@
 	<haxelib name="hscript-iris" />
 	<haxelib name="tjson" />
 	<haxelib name="flxanimate" />
-	<haxelib name="extension-androidtools" if="android" />
 
 	<!-- ______________________________ Android _________________________________ -->
 	<config:android permission="android.permission.READ_EXTERNAL_STORAGE" />
